@@ -1,0 +1,132 @@
+.login-logo {
+    height: 150px;
+    width: 150px;    
+    margin: 0px auto 0px;
+}
+
+.index-image {
+    text-align: center;
+}
+
+.index-home-image {
+    height: 74px;
+    width: 74px;    
+    padding: 10px;  
+    margin: auto;    
+}
+
+
+.stamp {    
+    position: absolute;    
+}
+.stamp img {
+    opacity: 0.5;        
+    height: 10rem;
+    width: 10rem;
+    z-index: 2;
+    margin: 60px;    
+    transform: rotate(20deg);
+}
+
+@media (max-width: 990px) {
+    .stamp img {
+        position: absolute;    
+        height: 8rem;
+        width: 8rem;
+        z-index: 1;
+        margin: 100px;
+        transform: rotate(20deg);
+    }
+}
+
+@media (max-width: 550px) {
+    .stamp img {
+        position: absolute;    
+        height: 6rem;
+        width: 6rem;
+        z-index: 1;
+        margin: 100px;
+        transform: rotate(20deg);
+    }
+}
+
+/* TABLE */
+th, td {
+    text-align: left;
+    padding: 5px;    
+}
+
+th {
+    background-color: #ececec;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.align-self-end {
+    align-self: flex-end;
+}
+
+.flex-column:nth-child(2) {
+    margin-left: auto;
+    text-align: left;
+}
+
+.signature-cust, .signature-owner {
+    display: inline-flex;    
+    margin: 100px;
+}
+
+.signature-owner {
+    float: right;
+}
+
+.signature-border {    
+    border-bottom: 1px solid black;    
+}
+
+/* PRINT */
+@media print {
+    .btn {
+      display: none;
+    }
+    .main-footer {
+        display: none;
+    }
+  }
+
+#invoice-POS h1 {
+    font-size: 1.5em;
+    color: #222;
+}
+#invoice-POS h2 {
+    font-size: .9em;
+}
+#invoice-POS h3 {
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 2em;
+}
+#invoice-POS p {
+    font-size: 8px;
+    color: #666;
+    line-height: 1.2em;
+}
+#invoice-POS #top {
+    min-height: 100px;    
+    padding-bottom: 10px;
+}
+#invoice-POS #mid {
+    min-height: 80px;
+}
+
+#invoice-POS .title {
+    float: right;
+}
+#invoice-POS .title p {
+    text-align: right;
+}
+#invoice-POS .item {
+    width: 24mm;
+}

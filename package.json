@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "chart.js": "^4.3.0",
+    "jspdf-invoice-template-nodejs": "^1.4.30",
+    "sweetalert2": "^11.7.5"
+  },
+  "scripts": {
+    "build": "npm run production",
+    "production": "npm run build"
+  }
+}
