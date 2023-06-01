@@ -1,0 +1,542 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jun 01, 2023 at 03:29 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.4.23
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `project_procumax`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carts`
+--
+
+CREATE TABLE `carts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `depts`
+--
+
+CREATE TABLE `depts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `depts`
+--
+
+INSERT INTO `depts` (`id`, `name`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'General', NULL, '2023-03-08 15:31:00', '2023-05-14 09:26:21'),
+(2, 'Purchasing', NULL, '2023-03-08 08:52:33', '2023-03-24 06:09:50'),
+(3, 'Finance', NULL, '2023-03-08 23:54:54', '2023-03-12 05:46:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(79, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(80, '2023_03_05_091035_create_position_table', 1),
+(81, '2023_03_05_091856_create_dept_name', 1),
+(138, '2023_03_05_092046_create_users_table', 2),
+(139, '2023_03_05_103222_create_vendors_table', 2),
+(140, '2023_03_05_103856_create_products_table', 2),
+(141, '2023_03_05_103902_create_purchase_orders_table', 2),
+(142, '2023_03_05_110340_create_po_details_table', 2),
+(143, '2023_03_05_111543_create_po_approvals_table', 2),
+(144, '2023_03_05_111545_create_carts_table ', 2),
+(145, '2023_03_07_132346_user_position', 2),
+(146, '2023_04_28_134036_add_status_in_purchase_order', 3),
+(147, '2023_05_01_073617_alter_po_approval_add_position', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `positions`
+--
+
+CREATE TABLE `positions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `level` int(11) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `positions`
+--
+
+INSERT INTO `positions` (`id`, `level`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 0, NULL, NULL, NULL),
+(2, 1, NULL, '2023-03-07 16:06:48', '2023-03-08 23:51:30'),
+(3, 2, NULL, '2023-03-08 16:25:37', '2023-03-09 02:44:37'),
+(8, 3, NULL, '2023-03-08 10:17:26', '2023-03-09 02:44:37'),
+(9, 4, '2023-05-14 07:24:15', '2023-03-08 10:17:26', '2023-05-14 07:24:15'),
+(10, 5, '2023-03-08 10:17:38', '2023-03-08 10:17:26', '2023-03-08 10:17:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `po_approvals`
+--
+
+CREATE TABLE `po_approvals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `po_id` bigint(20) UNSIGNED NOT NULL,
+  `verifier_id` bigint(20) UNSIGNED NOT NULL,
+  `next_approval_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `position_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `po_approvals`
+--
+
+INSERT INTO `po_approvals` (`id`, `po_id`, `verifier_id`, `next_approval_id`, `status`, `created_at`, `updated_at`, `position_id`) VALUES
+(3, 5, 3, 15, 'APPROVED', '2023-05-01 02:03:57', '2023-05-14 09:29:51', 2),
+(4, 6, 3, 7, 'APPROVED', '2023-05-03 04:41:10', '2023-05-14 08:05:55', 2),
+(7, 6, 4, 8, 'APPROVED', '2023-05-14 08:05:55', '2023-05-14 08:14:03', 3),
+(8, 6, 5, NULL, 'APPROVED', '2023-05-14 08:14:03', '2023-05-14 08:54:27', 8),
+(10, 7, 3, NULL, 'REJECTED', '2023-05-14 15:47:57', '2023-05-14 08:49:26', 2),
+(11, 8, 3, 16, 'APPROVED', '2023-05-14 15:56:31', '2023-05-18 06:04:45', 2),
+(15, 5, 4, 17, 'APPROVED', '2023-05-14 09:29:51', '2023-05-18 06:05:43', 3),
+(16, 8, 4, NULL, 'PENDING', '2023-05-18 06:04:45', '2023-05-18 06:04:45', 3),
+(17, 5, 5, NULL, 'APPROVED', '2023-05-18 06:05:43', '2023-05-18 06:06:04', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `po_details`
+--
+
+CREATE TABLE `po_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `po_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `unit_price` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `po_details`
+--
+
+INSERT INTO `po_details` (`id`, `po_id`, `product_id`, `unit_price`, `quantity`, `created_at`, `updated_at`) VALUES
+(3, 5, 1, 20000, 1, NULL, NULL),
+(4, 5, 2, 50000, 1, NULL, NULL),
+(5, 6, 1, 20000, 2, NULL, NULL),
+(6, 7, 1, 20000, 1, NULL, NULL),
+(7, 8, 2, 50000, 2, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pieces',
+  `unit_price` int(11) NOT NULL DEFAULT 0,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `uom`, `unit_price`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'Inlet Housing', 'pieces', 50000, NULL, NULL, '2023-05-14 09:30:34'),
+(2, 'Nozzle Housing', 'Pieces', 50000, NULL, '2023-04-27 09:00:25', '2023-04-27 09:00:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_orders`
+--
+
+CREATE TABLE `purchase_orders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `vendor_id` bigint(20) UNSIGNED NOT NULL,
+  `requester_id` bigint(20) UNSIGNED NOT NULL,
+  `ref_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mrv_id` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `purchase_orders`
+--
+
+INSERT INTO `purchase_orders` (`id`, `vendor_id`, `requester_id`, `ref_no`, `mrv_id`, `total_price`, `deleted_at`, `created_at`, `updated_at`, `status`) VALUES
+(5, 1, 2, '20230501-2', 12, 70000, NULL, '2023-05-01 02:03:57', '2023-05-18 06:06:04', 'COMPLETED'),
+(6, 1, 2, '20230503-1', 12, 40000, NULL, '2023-05-03 04:41:10', '2023-05-14 08:50:29', 'COMPLETED'),
+(7, 1, 2, '20230510-1', 13, 20000, NULL, '2023-05-10 04:37:14', '2023-05-14 08:06:02', 'REJECTED'),
+(8, 1, 2, '20230510-2', 13, 100000, NULL, '2023-05-10 05:23:22', '2023-05-10 05:23:22', 'PENDING');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('Admin Po','Admin Approval','Admin Mrv','Admin Root') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Admin Po',
+  `dept_id` bigint(20) UNSIGNED NOT NULL DEFAULT 1,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `username`, `password`, `role`, `dept_id`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Yuki', 'Yuki123', 'aaa', 'Admin Root', 1, 1, NULL, '2023-04-27 06:53:50'),
+(2, 'Esika', 'Esika123', 'aaa', 'Admin Po', 2, 1, NULL, '2023-05-14 09:26:59'),
+(3, 'Ann', 'Ann123', 'aaa', 'Admin Approval', 3, 1, NULL, '2023-04-27 07:02:30'),
+(4, 'Chintya', 'Chintya123', 'aaa', 'Admin Approval', 1, 1, '2023-05-10 04:43:34', '2023-05-14 06:35:40'),
+(5, 'Elia', 'Elia1234', 'aaa', 'Admin Approval', 3, 1, '2023-05-10 05:19:13', '2023-05-14 06:36:05'),
+(6, 'Ena', 'Ena123', 'aaa', 'Admin Po', 2, 1, '2023-05-14 09:32:26', '2023-05-14 09:32:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_positions`
+--
+
+CREATE TABLE `user_positions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `position_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_positions`
+--
+
+INSERT INTO `user_positions` (`id`, `position_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 10, 1, NULL, NULL),
+(2, 1, 2, NULL, NULL),
+(6, 2, 3, NULL, NULL),
+(11, 3, 4, NULL, NULL),
+(12, 8, 5, NULL, NULL),
+(13, 1, 6, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendors`
+--
+
+CREATE TABLE `vendors` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vendors`
+--
+
+INSERT INTO `vendors` (`id`, `name`, `address`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'Pisang Molen', 'Apple Road No 5', '2023-05-18 05:40:51', '2023-04-27 08:27:09', '2023-05-18 05:40:51');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `carts_product_id_foreign` (`product_id`);
+
+--
+-- Indexes for table `depts`
+--
+ALTER TABLE `depts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `po_approvals`
+--
+ALTER TABLE `po_approvals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `po_approvals_po_id_foreign` (`po_id`),
+  ADD KEY `po_approvals_verifier_id_foreign` (`verifier_id`),
+  ADD KEY `po_approvals_next_approval_id_foreign` (`next_approval_id`),
+  ADD KEY `po_approvals_position_id_foreign` (`position_id`);
+
+--
+-- Indexes for table `po_details`
+--
+ALTER TABLE `po_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `po_details_po_id_foreign` (`po_id`),
+  ADD KEY `po_details_product_id_foreign` (`product_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `purchase_orders_vendor_id_foreign` (`vendor_id`),
+  ADD KEY `purchase_orders_requester_id_foreign` (`requester_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_username_unique` (`username`),
+  ADD KEY `users_dept_id_foreign` (`dept_id`);
+
+--
+-- Indexes for table `user_positions`
+--
+ALTER TABLE `user_positions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_positions_position_id_foreign` (`position_id`),
+  ADD KEY `user_positions_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `vendors`
+--
+ALTER TABLE `vendors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `depts`
+--
+ALTER TABLE `depts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+
+--
+-- AUTO_INCREMENT for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `positions`
+--
+ALTER TABLE `positions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `po_approvals`
+--
+ALTER TABLE `po_approvals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `po_details`
+--
+ALTER TABLE `po_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user_positions`
+--
+ALTER TABLE `user_positions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `vendors`
+--
+ALTER TABLE `vendors`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `carts`
+--
+ALTER TABLE `carts`
+  ADD CONSTRAINT `carts_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `po_approvals`
+--
+ALTER TABLE `po_approvals`
+  ADD CONSTRAINT `po_approvals_next_approval_id_foreign` FOREIGN KEY (`next_approval_id`) REFERENCES `po_approvals` (`id`),
+  ADD CONSTRAINT `po_approvals_po_id_foreign` FOREIGN KEY (`po_id`) REFERENCES `purchase_orders` (`id`),
+  ADD CONSTRAINT `po_approvals_position_id_foreign` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`),
+  ADD CONSTRAINT `po_approvals_verifier_id_foreign` FOREIGN KEY (`verifier_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `po_details`
+--
+ALTER TABLE `po_details`
+  ADD CONSTRAINT `po_details_po_id_foreign` FOREIGN KEY (`po_id`) REFERENCES `purchase_orders` (`id`),
+  ADD CONSTRAINT `po_details_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  ADD CONSTRAINT `purchase_orders_requester_id_foreign` FOREIGN KEY (`requester_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `purchase_orders_vendor_id_foreign` FOREIGN KEY (`vendor_id`) REFERENCES `vendors` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_dept_id_foreign` FOREIGN KEY (`dept_id`) REFERENCES `depts` (`id`);
+
+--
+-- Constraints for table `user_positions`
+--
+ALTER TABLE `user_positions`
+  ADD CONSTRAINT `user_positions_position_id_foreign` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_positions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
