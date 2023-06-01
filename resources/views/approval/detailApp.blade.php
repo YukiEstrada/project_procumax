@@ -19,7 +19,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row col">
                             <div class="col-md-6" name="print">
                                 <div><b>PROCUMAX</b></div>
                                 <div>Purchase Order</div>
@@ -106,45 +106,35 @@
                         <p><strong>Thank you for your business support.</strong></p>
                         <p>Ref no : {{ $inv->ref_no }}</p>
                     </center>
-                    <div class="form-row">
-                        <div class="col-md-3 mb-2">                      
-                                
-                            </div>
-                                    
-                            <div class="col-md-3 mb-2">
-                            </div>
-                            <div class="col-md-3 mb-2">
-                            </div>  
-                            <div class="col-md mb-2">
-                            </div>  
-                            <div class="row">
-                                <div class="col-lg-6 col-sm-6 mb-2 mt-auto">
-                                    <form action="{{ route('App_detail_show_rejected', $po_approval->id) }}" method="POST">
-                                        @csrf
-                                        <button class="btn btn-danger" name="reject" type="submit">Reject</button>
-                                    </form>                                      
+                    <div class="form-row">                                 
+                        <div class="col">                                                                                                 
+                            <label for="validationCustom03" class="col align-self-center mt-auto">Next level</label>
+                            <form action="{{ route('App_detail_show_approved', $po_approval->id) }}" method="POST">
+                                @csrf  
+                                <div class="col">
+                                    <select name="next_verifier_id" class="custom-select" id="validationCustom04">
+                                        <option value=""></option>
+                                        @if ($next_verifiers != null)
+                                            @foreach ($next_verifiers as $approval)
+                                                <option value="{{ $approval['id'] }}"> {{ $approval['name'] }}
+                                                </option>
+                                            @endforeach
+                                        @else
+                                            
+                                        @endif
+                                    </select>
+                                </div>               
+                                <div class="col mb-2 mt-2">
+                                    <button class="btn btn-primary" name="submit" type="submit">Save</button>
+                                </div>                                                                                                                                                                                                                                                                                                                  
+                            </form>                             
+                            <form action="{{ route('App_detail_show_rejected', $po_approval->id) }}" method="POST">
+                                @csrf      
+                                <div class="col mb-2 mt-2">                                                             
+                                    <button class="btn btn-danger" name="reject" type="submit">Reject</button>                                                                   
                                 </div>
-                                <div class="col-lg-6 col-sm-6 mb-2 mt-auto"> 
-                                    
-                                        <form action="{{ route('App_detail_show_approved', $po_approval->id) }}" method="POST">
-                                            @csrf
-                                            <label for="validationCustom03" class="align-self-center">Next level</label>
-                                            <select name="next_verifier_id" class="custom-select" id="validationCustom04">
-                                                <option value=""></option>
-                                                @if ($next_verifiers != null)
-                                                    @foreach ($next_verifiers as $approval)
-                                                        <option value="{{ $approval['id'] }}"> {{ $approval['name'] }}
-                                                        </option>
-                                                    @endforeach
-                                                @else
-                                                    
-                                                @endif
-                                            </select>       
-                                            <button class="btn btn-primary" name="submit" type="submit">Save</button>
-                                                                                               
-                                        </form>
-                                </div>
-                            </div>
+                            </form>                                      
+                        </div>
                         @endif
                     </div>                    
                 </div>

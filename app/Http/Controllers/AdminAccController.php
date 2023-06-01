@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class AdminAccController extends Controller
@@ -59,6 +60,7 @@ class AdminAccController extends Controller
         if ($next_level) {
             $next_verifiers = User::whereHas('positions', function ($query) use ($next_level) {
                 $query->where('positions.id', $next_level->id);
+                $query->where('users.is_active', 1 );
             })->get();
         }
 
@@ -101,25 +103,22 @@ class AdminAccController extends Controller
         $next_level = Position::where('level', '>', $level)->first();
         if ($next_level) {
             if (!$request->next_verifier_id) {
-                return redirect()->back()->withErrors('Next verifier id required for next level!');
+                Alert::error('Failed', 'Next verifier id required for next level!');
+                return redirect()->back();
             } else {
                 $approval->createNextLevel($request->next_verifier_id);
             }
 
-            
-
-
-            return redirect()->route('App_form_show')
-            ->with('success','Purchase Order has beem successfully approved');
+            Alert::success('Success', 'Purchase Order has been successfully approved!');
+            return redirect()->route('App_form_show');
         } else {
             //Deem PO as completed 
             $order = $approval->order;
             $order->status = PurchaseOrder::STATUS_APPROVED;
             $order->save();
 
-        
-            return redirect()->route('App_form_show')
-            ->with('success','Purchase Order has been successfully completed');
+            Alert::success('Success', 'Purchase Order has been successfully completed!');
+            return redirect()->route('App_form_show');
 
         }
     }
